@@ -8,6 +8,7 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -34,6 +35,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Task extends Model
 {
+	use HasFactory;
 	protected $table = 'tasks';
 
 	protected $casts = [
@@ -65,8 +67,8 @@ class Task extends Model
 	public function categories()
 	{
 		return $this->belongsToMany(Category::class, 'task_category')
-					->withPivot('id')
-					->withTimestamps();
+			->withPivot('id')
+			->withTimestamps();
 	}
 
 	public function task_reminders()
@@ -77,7 +79,7 @@ class Task extends Model
 	public function tags()
 	{
 		return $this->belongsToMany(Tag::class, 'task_tag')
-					->withPivot('id')
-					->withTimestamps();
+			->withPivot('id')
+			->withTimestamps();
 	}
 }

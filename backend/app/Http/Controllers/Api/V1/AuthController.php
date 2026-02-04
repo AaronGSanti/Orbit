@@ -67,6 +67,26 @@ class AuthController extends Controller
         ], 201);
     }
 
+    #[OA\Post(
+        path: '/api/v1/login',
+        tags: ['Auth'],
+        summary: 'Iniciar sesion de usuario',
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                required: ['email', 'password'],
+                properties: [
+                    new OA\Property(property: 'email', type: 'string', example: 'john@gmail.com'),
+                    new OA\Property(property: 'password', type: 'string', example: 'password123'),
+                ]
+            )
+        ),
+        responses: [
+            new OA\Response(response: 200, description: 'Usuario logueado'),
+            new OA\Response(response: 401, description: 'Credenciales invalidas'),
+            new OA\Response(response: 422, description: 'Validacion'),
+        ]
+    )]
     public function login(Request $request)
     {
         try {
@@ -102,11 +122,30 @@ class AuthController extends Controller
         ], 200);
     }
 
+    #[OA\Get(
+        path: '/api/v1/profile',
+        tags: ['Auth'],
+        summary: 'Obtener el usuario autenticado',
+        security: [['bearerAuth' => []]],
+        responses: [
+            new OA\Response(response: 200, description: 'Usuario autenticado'),
+            new OA\Response(response: 401, description: 'No autenticado'),
+        ]
+    )]
     public function user(Request $request)
     {
         return $request->user();
     }
 
+    #[OA\Post(
+        path: '/api/v1/logout',
+        tags: ['Auth'],
+        summary: 'Cerrar sesion de usuario',
+        security: [['bearerAuth' => []]],
+        responses: [
+            new OA\Response(response: 200, description: 'Sesion cerrada correctamente'),
+        ]
+    )]
     public function logout(Request $request)
     {
         $request->user()->tokens()->delete();

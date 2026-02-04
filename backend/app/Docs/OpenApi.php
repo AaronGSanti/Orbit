@@ -13,4 +13,10 @@ use OpenApi\Attributes as OA;
     url: 'http://localhost:8000',
     description: 'Local'
 )]
+#[OA\SecurityScheme(
+    securityScheme: 'bearerAuth',
+    type: 'http',
+    scheme: 'bearer',
+    bearerFormat: 'JWT'
+)]
 final class OpenApi {}

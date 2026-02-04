@@ -1,72 +1,52 @@
 <?php
 
-/**
- * Created by Reliese Model.
- */
-
 namespace App\Models;
 
-use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens; 
 
-/**
- * Class User
- * 
- * @property int $id
- * @property string $name
- * @property string $email
- * @property Carbon|null $email_verified_at
- * @property string $password
- * @property string|null $remember_token
- * @property Carbon|null $created_at
- * @property Carbon|null $updated_at
- * 
- * @property Collection|Category[] $categories
- * @property Collection|Tag[] $tags
- * @property Collection|TaskList[] $task_lists
- * @property Collection|Task[] $tasks
- *
- * @package App\Models
- */
-class User extends Model
+class User extends Authenticatable
 {
-	protected $table = 'users';
+    use HasApiTokens, Notifiable, HasFactory;
 
-	protected $casts = [
-		'email_verified_at' => 'datetime'
-	];
+    protected $table = 'users';
 
-	protected $hidden = [
-		'password',
-		'remember_token'
-	];
+    protected $casts = [
+        'email_verified_at' => 'datetime'
+    ];
 
-	protected $fillable = [
-		'name',
-		'email',
-		'email_verified_at',
-		'password',
-		'remember_token'
-	];
+    protected $hidden = [
+        'password',
+        'remember_token'
+    ];
 
-	public function categories()
-	{
-		return $this->hasMany(Category::class);
-	}
+    protected $fillable = [
+        'name',
+        'email',
+        'email_verified_at',
+        'password',
+        'remember_token'
+    ];
 
-	public function tags()
-	{
-		return $this->hasMany(Tag::class);
-	}
+    public function categories()
+    {
+        return $this->hasMany(Category::class);
+    }
 
-	public function task_lists()
-	{
-		return $this->hasMany(TaskList::class);
-	}
+    public function tags()
+    {
+        return $this->hasMany(Tag::class);
+    }
 
-	public function tasks()
-	{
-		return $this->hasMany(Task::class);
-	}
+    public function task_lists()
+    {
+        return $this->hasMany(TaskList::class);
+    }
+
+    public function tasks()
+    {
+        return $this->hasMany(Task::class);
+    }
 }
