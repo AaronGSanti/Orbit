@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\Api\V1\AuthController;
+use App\Http\Controllers\Api\V1\CategoryController;
 use App\Http\Controllers\Api\V1\TaskController;
+use App\Http\Controllers\Api\V1\TaskListController;
 use App\Http\Controllers\Api\V1\UserController;
-use App\Models\Task;
+
 use Illuminate\Support\Facades\Route;
 
 
@@ -26,5 +28,17 @@ Route::prefix('v1')->group(function () {
         Route::post('/tasks/store', [TaskController::class, 'store']);
         Route::put('/tasks/update/{id}', [TaskController::class, 'update']);
         Route::delete('/tasks/delete/{id}', [TaskController::class, 'delete']);
+
+        //Routes categories
+        Route::get('/categories', [CategoryController::class, 'index']);
+        Route::post('/categories/store', [CategoryController::class, 'store']);
+        Route::put('/categories/update/{id}', [CategoryController::class, 'update']);
+        Route::delete('/categories/delete/{id}', [CategoryController::class, 'delete']);
+
+        //Routes task lists
+        Route::get('/task_lists', [TaskListController::class, 'index']);
+        Route::post('/task_lists/store', [TaskListController::class, 'store']);
+        Route::put('/task_lists/update/{id}', [TaskListController::class, 'update']);
+        Route::delete('/task_lists/delete/{id}', [TaskListController::class, 'delete']);
     });
 });

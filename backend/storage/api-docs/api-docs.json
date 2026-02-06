@@ -146,6 +146,176 @@
                 ]
             }
         },
+        "/api/v1/categories": {
+            "get": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Obtener todas las categorias",
+                "operationId": "e225c2b7eb5daf7fb16e00f4f07ff030",
+                "responses": {
+                    "200": {
+                        "description": "Lista de categorias"
+                    },
+                    "404": {
+                        "description": "No se encontraron categorias"
+                    },
+                    "401": {
+                        "description": "No autorizado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/categories/store": {
+            "post": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Crear una nueva categoria",
+                "operationId": "578e4836333e77a09a325c7a5fb2fb80",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "nombre"
+                                ],
+                                "properties": {
+                                    "nombre": {
+                                        "type": "string",
+                                        "example": "Trabajo"
+                                    },
+                                    "color": {
+                                        "type": "string",
+                                        "example": "#FF5733"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Categoria creada exitosamente"
+                    },
+                    "422": {
+                        "description": "Validacion fallida"
+                    },
+                    "401": {
+                        "description": "No autorizado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/categories/update/{id}": {
+            "put": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Actualizar una categoria existente",
+                "operationId": "60d1aed4d130b916843316b5763a1d4c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la categoria a actualizar",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "nombre"
+                                ],
+                                "properties": {
+                                    "nombre": {
+                                        "type": "string",
+                                        "example": "Trabajo"
+                                    },
+                                    "color": {
+                                        "type": "string",
+                                        "example": "#FF5733"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Categoria actualizada exitosamente"
+                    },
+                    "404": {
+                        "description": "Categoria no encontrada"
+                    },
+                    "401": {
+                        "description": "No autorizado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/categories/delete/{id}": {
+            "delete": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Eliminar una categoria existente",
+                "operationId": "663ec5622a6e298bdb5848f36fb3bef7",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la categoria a eliminar",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Categoria eliminada exitosamente"
+                    },
+                    "404": {
+                        "description": "Categoria no encontrada"
+                    },
+                    "401": {
+                        "description": "No autorizado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/v1/tasks": {
             "get": {
                 "tags": [
@@ -342,6 +512,182 @@
                     },
                     "404": {
                         "description": "Tarea no encontrada"
+                    },
+                    "401": {
+                        "description": "No autorizado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/task_lists": {
+            "get": {
+                "tags": [
+                    "Task Lists"
+                ],
+                "summary": "Obtener todas las task lists",
+                "operationId": "6c04affa60782a4be2524797291a9138",
+                "responses": {
+                    "200": {
+                        "description": "Lista de task lists"
+                    },
+                    "404": {
+                        "description": "No se encontraron task lists"
+                    },
+                    "401": {
+                        "description": "No autorizado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/task_lists/store": {
+            "post": {
+                "tags": [
+                    "Task Lists"
+                ],
+                "summary": "Crear una nueva task list",
+                "operationId": "66386a6419499d206f697b1631285188",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "nombre",
+                                    "orden"
+                                ],
+                                "properties": {
+                                    "nombre": {
+                                        "type": "string",
+                                        "example": "Lista de tareas"
+                                    },
+                                    "orden": {
+                                        "type": "string",
+                                        "example": "1"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Task list created successfully"
+                    },
+                    "422": {
+                        "description": "Validacion fallida"
+                    },
+                    "401": {
+                        "description": "No autorizado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/apui/v1/task_lists/update/{id}": {
+            "put": {
+                "tags": [
+                    "Task Lists"
+                ],
+                "summary": "Actualizar una task list existente",
+                "operationId": "c6683bf51af328ad88900db3097dd6f0",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la task list a actualizar",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "nombre",
+                                    "orden"
+                                ],
+                                "properties": {
+                                    "nombre": {
+                                        "type": "string",
+                                        "example": "Lista de tareas actualizada"
+                                    },
+                                    "color": {
+                                        "type": "string",
+                                        "example": "#FF5733"
+                                    },
+                                    "orden": {
+                                        "type": "integer",
+                                        "example": "2"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Task list updated successfully"
+                    },
+                    "404": {
+                        "description": "Task list no encontrada"
+                    },
+                    "401": {
+                        "description": "No autorizado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/task_lists/delete/{id}": {
+            "delete": {
+                "tags": [
+                    "Task Lists"
+                ],
+                "summary": "Eliminar una task list existente",
+                "operationId": "684157270d4c8e2d9cdb5d5afa5d947d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la task list a eliminar",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Task list eliminada exitosamente"
+                    },
+                    "404": {
+                        "description": "Task list no encontrada"
                     },
                     "401": {
                         "description": "No autorizado"
@@ -551,8 +897,16 @@
             "description": "Auth"
         },
         {
+            "name": "Categories",
+            "description": "Categories"
+        },
+        {
             "name": "Tasks",
             "description": "Tasks"
+        },
+        {
+            "name": "Task Lists",
+            "description": "Task Lists"
         },
         {
             "name": "Users",
