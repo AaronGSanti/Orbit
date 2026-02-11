@@ -316,6 +316,168 @@
                 ]
             }
         },
+        "/api/v1/tags": {
+            "get": {
+                "tags": [
+                    "Tags"
+                ],
+                "summary": "Obtener todas las etiquetas",
+                "operationId": "251e5d7629ff7a4ba40a9da52e6692e8",
+                "responses": {
+                    "200": {
+                        "description": "Lista de etiquetas"
+                    },
+                    "404": {
+                        "description": "No se encontraron etiquetas"
+                    },
+                    "401": {
+                        "description": "No autorizado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/tags/store": {
+            "post": {
+                "tags": [
+                    "Tags"
+                ],
+                "summary": "Crear una nueva etiqueta",
+                "operationId": "f7dd933df7d140245fa8a2567fd7edcb",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "nombre"
+                                ],
+                                "properties": {
+                                    "nombre": {
+                                        "type": "string",
+                                        "example": "Urgente"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Etiqueta creada exitosamente"
+                    },
+                    "422": {
+                        "description": "Validacion fallida"
+                    },
+                    "401": {
+                        "description": "No autorizado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/tags/update/{id}": {
+            "put": {
+                "tags": [
+                    "Tags"
+                ],
+                "summary": "Actualizar una etiqueta existente",
+                "operationId": "d9f1f4c7f068f3f0784373511cfa3780",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la etiqueta a actualizar",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "nombre"
+                                ],
+                                "properties": {
+                                    "nombre": {
+                                        "type": "string",
+                                        "example": "Urgente"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Etiqueta actualizada exitosamente"
+                    },
+                    "422": {
+                        "description": "Validacion fallida"
+                    },
+                    "401": {
+                        "description": "No autorizado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/tags/delete/{id}": {
+            "delete": {
+                "tags": [
+                    "Tags"
+                ],
+                "summary": "Eliminar una etiqueta existente",
+                "operationId": "3651353e9a1ea2741192f49063a99cc4",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la etiqueta a eliminar",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Etiqueta eliminada exitosamente"
+                    },
+                    "404": {
+                        "description": "Etiqueta no encontrada"
+                    },
+                    "401": {
+                        "description": "No autorizado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/v1/tasks": {
             "get": {
                 "tags": [
@@ -899,6 +1061,10 @@
         {
             "name": "Categories",
             "description": "Categories"
+        },
+        {
+            "name": "Tags",
+            "description": "Tags"
         },
         {
             "name": "Tasks",

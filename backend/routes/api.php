@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\CategoryController;
+use App\Http\Controllers\Api\V1\TagsController;
 use App\Http\Controllers\Api\V1\TaskController;
 use App\Http\Controllers\Api\V1\TaskListController;
 use App\Http\Controllers\Api\V1\UserController;
@@ -40,5 +41,11 @@ Route::prefix('v1')->group(function () {
         Route::post('/task_lists/store', [TaskListController::class, 'store']);
         Route::put('/task_lists/update/{id}', [TaskListController::class, 'update']);
         Route::delete('/task_lists/delete/{id}', [TaskListController::class, 'delete']);
+
+        //Routes tags
+        Route::get('/tags', [TagsController::class, 'index']);
+        Route::post('/tags/store', [TagsController::class, 'store']);
+        Route::put('/tags/update/{id}', [TagsController::class, 'update']);
+        Route::delete('/tags/delete/{id}', [TagsController::class, 'delete']);
     });
 });
