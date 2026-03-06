@@ -29,6 +29,7 @@ Route::prefix('v1')->group(function () {
         Route::post('/tasks/store', [TaskController::class, 'store']);
         Route::put('/tasks/update/{id}', [TaskController::class, 'update']);
         Route::delete('/tasks/delete/{id}', [TaskController::class, 'delete']);
+        Route::get('/tasks/search/{search}', [TaskController::class, 'showTask']);
 
         //Routes categories
         Route::get('/categories', [CategoryController::class, 'index']);
