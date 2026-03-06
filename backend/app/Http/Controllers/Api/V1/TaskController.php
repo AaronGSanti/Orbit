@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Models\Task;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 use OpenApi\Attributes as OA;
 use Illuminate\Http\Request;
 
@@ -23,9 +24,11 @@ class TaskController extends Controller
     )]
     public function index()
     {
-        $task = Task::all();
+        $user = Auth::user();
+        $tasks = Task::where('user_id', $user->id)->get();
+        $total_task = $tasks->count();
 
-        if ($task->isEmpty()) {
+        if ($tasks->isEmpty()) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'No tasks found'
@@ -33,7 +36,9 @@ class TaskController extends Controller
         } else {
             return response()->json([
                 'status' => 'success',
-                'data' => $task
+                'data' =>  $tasks,
+                'user_id' => $user->id,
+                'total_task' => $total_task
             ], 200);
         }
     }
@@ -67,7 +72,7 @@ class TaskController extends Controller
     {
         try {
             $validatedData = $request->validate([
-                'titulo' => 'required|string|max:255',
+                'titulo' => 'required|string|max:255',    
                 'descripcion' => 'nullable|string',
                 'estado' => 'required|string|in:pendiente,en_progreso,bloqueada,completada',
                 'prioridad' => 'required|string|in:baja,media,alta,urgente',
