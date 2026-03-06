@@ -1,17 +1,17 @@
 import {
-  IonButton,
-  IonButtons,
-  IonCard,
-  IonCardContent,
-  IonCardHeader,
-  IonCardTitle,
-  IonContent,
-  IonHeader,
-  IonIcon,
-  IonMenuButton,
-  IonPage,
-  IonTitle,
-  IonToolbar
+    IonButton,
+    IonButtons,
+    IonCard,
+    IonCardContent,
+    IonCardHeader,
+    IonCardTitle,
+    IonContent,
+    IonHeader,
+    IonIcon,
+    IonMenuButton,
+    IonPage,
+    IonTitle,
+    IonToolbar
 } from "@ionic/react";
 import AppMenu from "../components/layouts/AppMenu";
 import TaskSearch from "../components/tasks/TaskSearch";
@@ -20,6 +20,15 @@ import TaskFormModal from "../components/tasks/TaskFormModal";
 import { useState } from "react";
 import { getTasks } from "../services/task";
 import TaskList from "../components/tasks/TaskList";
+
+export type Task = {
+    id: number;
+    titulo: string;
+    descripcion: string;
+    estado: string;
+    prioridad: string;
+    fecha_limite: string;
+};
 
 const Tarea: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -54,7 +63,8 @@ const Tarea: React.FC = () => {
             </div>
 
             {/**BUSCADOR DE TAREAS */}
-            <TaskSearch />
+            <TaskSearch onResults={(tasks) => console.log("Resultados de busqueda: ", tasks)} onReset={() => console.log("Busqueda reseteada")}
+            />
             {/**LISTA DE TAREAS */}
             <TaskList/>
 

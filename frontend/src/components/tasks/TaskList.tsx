@@ -1,6 +1,6 @@
 import { IonButton, IonButtons, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonIcon } from "@ionic/react";
 import { useEffect, useState } from "react";
-import { getTasks } from "../../services/task";
+import { deleteTask, getTasks } from "../../services/task";
 import { pencil, trash } from "ionicons/icons";
 
 function TaskList(){
@@ -18,6 +18,16 @@ function TaskList(){
         }
         fetchTasks();
     }, []);
+
+    //Funcion para eliminar una tarea
+    const handleDelete = async (id:number) =>{
+        try{
+            await deleteTask(id);
+            setTasks(prevTasks => prevTasks.filter(task => task.id !== id));
+        }catch(error){
+            console.log("Error" , error);
+        }
+    }
     return(
         <>
             {/**LISTADO DE TAREAS */}
@@ -34,8 +44,8 @@ function TaskList(){
                         <IonButton fill="clear">
                             <IonIcon icon={pencil} />
                         </IonButton>
-                        <IonButton fill="clear">
-                            <IonIcon icon={trash} />
+                        <IonButton fill="clear" onClick={() => handleDelete(task.id)}>
+                            <IonIcon icon={trash}/>
                         </IonButton>
                     </div>
                 </IonCardContent>

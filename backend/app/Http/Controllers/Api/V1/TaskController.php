@@ -72,7 +72,7 @@ class TaskController extends Controller
     {
         try {
             $validatedData = $request->validate([
-                'titulo' => 'required|string|max:255',    
+                'titulo' => 'required|string|max:255',
                 'descripcion' => 'nullable|string',
                 'estado' => 'required|string|in:pendiente,en_progreso,bloqueada,completada',
                 'prioridad' => 'required|string|in:baja,media,alta,urgente',
@@ -204,5 +204,23 @@ class TaskController extends Controller
                 'message' => 'Task deleted successfully'
             ], 200);
         }
+    }
+
+    public function showTask($search)
+    {
+        $user = Auth::user();
+        $tasks = Task::where('user_id', $user->id)
+            ->where(function ($query) use ($search) {
+                $query->where('titulo', 'LIKE', "%{$search}%")
+                    ->orWhere('descripcion', 'LIKE', "%{$search}%")
+                    ->orWhere('estado', 'LIKE', "%{$search}%")
+                    ->orWhere('prioridad', 'LIKE', "%{$search}%");
+            })
+            ->paginate(10);
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $tasks
+        ], 200);
     }
 }
