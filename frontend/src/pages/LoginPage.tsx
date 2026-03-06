@@ -10,16 +10,18 @@ import {
 } from "@ionic/react";
 import { login } from "../services/authService";
 import { useState } from "react";
+import { useHistory } from "react-router";
 
 export default function LoginPage() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const history = useHistory();
 
     const handleSubmit = async () => {
         try {
         const data = await login(email, password);
         console.log("Login OK", data);
-        window.location.href = "/home";
+        history.push("/home");
         } catch (error: any) {
         console.log("Error:", error.response?.data);
         }
@@ -78,7 +80,10 @@ return (
             <IonText color="medium">
                 <p style={{ textAlign: "center", marginTop: "15px" }}>
                 ¿No tienes cuenta?
-                    <a href="/register" style={{textDecoration: 'none'}}> Registrate</a>
+                    <span style={{ color: "#3880ff" , cursor: "pointer"}}
+                    onClick={() => history.push("/register")}>
+
+                    </span>
                 </p>
             </IonText>
             </div>

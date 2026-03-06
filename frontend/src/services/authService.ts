@@ -1,22 +1,23 @@
 import api from "./api";
 
-export const login = async (email: string , password: string) => {
-    await api.get("/sanctum/csrf-cookie");
+export const login = async (email: string, password: string) => {
     const response = await api.post("/api/v1/login", {
         email,
-        password
+        password,
     });
 
-    return response.data;
-}
+    const token = response.data.data.access_token;
+    localStorage.setItem("token", token);
 
-export const register = async (name: string, email: string , password: string) => {
-    await api.get("/sanctum/csrf-cookie");
+    return response.data;
+};
+
+export const register = async (name: string, email: string, password: string) => {
     const response = await api.post("/api/v1/register", {
         name,
         email,
-        password
+        password,
     });
 
     return response.data;
-}
+};

@@ -1,17 +1,19 @@
 import { IonButton, IonContent, IonInput, IonItem, IonLabel, IonList, IonPage, IonText } from "@ionic/react";
 import { register } from "../services/authService";
 import { useState } from "react";
+import { useHistory } from "react-router";
 
 export default function RegisterPage(){
     const [name , setName] = useState("");
     const [email , setEmail] = useState("");
     const [password , setPassword] = useState("");
+    const history = useHistory();
 
     const handleSubmit = async () => {
         try{
             const data = await register(name, email, password);
             console.log("Register OK" , data);
-            window.location.href = "/home";
+            history.push("/home");
         }catch(error: any){
             console.log("Error:", error.response?.data);
         }

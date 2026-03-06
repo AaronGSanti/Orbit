@@ -35,6 +35,7 @@ import '@ionic/react/css/palettes/dark.system.css';
 import './theme/variables.css';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
+import Tarea from './pages/Tarea';
 
 setupIonicReact();
 
@@ -48,6 +49,7 @@ const App: React.FC = () => (
         <Route exact path='/home' component={Home}>
           <Home />
         </Route>
+        <Route exact path="/tasks" component={Tarea}/>
       </IonRouterOutlet>
     </IonReactRouter>
   </IonApp>
