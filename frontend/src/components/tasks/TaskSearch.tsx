@@ -1,34 +1,44 @@
 import { IonSearchbar } from "@ionic/react";
 import { useState } from "react";
 import { searchTasks } from "../../services/task";
-import type { Task } from "../../pages/Tarea";
+import { Task } from "../../pages/Tarea";
 
-type Props = {
+type TaskSearchProps = {
     onResults: (tasks: Task[]) => void;
     onReset: () => void;
-}
-function TaskSearch({onResults, onReset} : Props) {
+};
+
+const TaskSearch: React.FC<TaskSearchProps> = ({ onResults, onReset }) => {
     const [search, setSearch] = useState("");
 
-    const handleSearch = async (search: string) => {
-        setSearch(search);
-        if(!search.trim()){
+    const handleSearch = async (value: string) => {
+        setSearch(value);
+
+        if (value.trim() === "") {
             onReset();
             return;
         }
 
-        try{
-            const results = await searchTasks(search);
+        try {
+            const results = await searchTasks(value);
             onResults(results);
-        }catch(error){
-            console.log("Error" , error);
+        } catch (error) {
+            console.error("Error en la búsqueda:", error);
         }
-    }
-    return(
-        <>
-            <IonSearchbar placeholder="Buscar" onIonInput={ (e) => handleSearch(e.detail.value!)} debounce={500}></IonSearchbar>
-        </>
-    )
-}
+    };
+
+    return (
+        <IonSearchbar
+            value={search}
+            placeholder="Buscar"
+            onIonInput={(e) => handleSearch(e.detail.value!)}
+            onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                    handleSearch(search);
+                }
+            }}
+        />
+    );
+};
 
 export default TaskSearch;
