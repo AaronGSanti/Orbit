@@ -21,7 +21,7 @@ function Menu() {
         <IonMenu side="start" contentId="main-content">
             <IonHeader>
             <IonToolbar>
-                <IonTitle>Menu Content</IonTitle>
+                <IonTitle>Menu</IonTitle>
             </IonToolbar>
             </IonHeader>
 

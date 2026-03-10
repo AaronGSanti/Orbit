@@ -39,6 +39,7 @@ const TaskFormModal: React.FC<TaskFormModalProps> = ({
     const [estado, setEstado] = useState("");
     const [prioridad, setPrioridad] = useState("");
     const [fecha_limite, setFechaLimite] = useState("");
+    const [isSaving, setIsSaving] = useState(false);
 
     useEffect(() => {
         if (task) {
@@ -57,7 +58,11 @@ const TaskFormModal: React.FC<TaskFormModalProps> = ({
     }, [task, isOpen]);
 
     const handleSubmit = async () => {
+        if (isSaving) return;
+
         try {
+            setIsSaving(true);
+
             if (task?.id) {
                 const data = await updateTask(
                     task.id,
@@ -90,6 +95,8 @@ const TaskFormModal: React.FC<TaskFormModalProps> = ({
             await onTaskCreated();
         } catch (error: any) {
             console.log("Error al guardar tarea:", error.response?.data || error.message);
+        } finally {
+            setIsSaving(false);
         }
     };
 
@@ -177,7 +184,7 @@ const TaskFormModal: React.FC<TaskFormModalProps> = ({
                         justifyContent: "flex-end",
                     }}
                 >
-                    <IonButton onClick={handleSubmit}>
+                    <IonButton onClick={handleSubmit} disabled={isSaving}>
                         {task ? "Actualizar" : "Guardar"}
                     </IonButton>
 

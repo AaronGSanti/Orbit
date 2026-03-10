@@ -28,14 +28,14 @@ const TaskList: React.FC<TaskListProps> = ({ tasks = [], onDelete , onEdit}) => 
                 <IonCardTitle>{task.titulo}</IonCardTitle>
             </IonCardHeader>
             <IonCardContent>
-                <p><strong>Estado:</strong>{formatLabel(task.estado)}</p>
+                <p><strong>Estado: </strong>{formatLabel(task.estado)}</p>
                 <p>
                     <strong>Prioridad: </strong>
                     <IonBadge color={getPriorityColor(task.prioridad)}>
                         {formatLabel(task.prioridad)}
                     </IonBadge>
                 </p>
-                <p><strong>Fecha limite:</strong>{new Date(task.fecha_limite).toLocaleDateString()}</p>
+                <p><strong>Fecha limite: </strong>{new Date(task.fecha_limite).toLocaleDateString()}</p>
 
                 
                 <div style={{display: "flex" , justifyContent: "flex-end"}}>
