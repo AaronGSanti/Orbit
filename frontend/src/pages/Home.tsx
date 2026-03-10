@@ -14,7 +14,9 @@ import {
 import { useEffect, useState } from "react";
 
 import AppMenu from "../components/layouts/AppMenu";
-import { getTasks } from "../services/task";
+import { getTasks, getTotalTasks } from "../services/task";
+import Footer from "../components/layouts/Footer";
+import "../components/layouts/AppMenu.css";
 
 const Home: React.FC = () => {
   const [totalTasks, setTotalTasks] = useState<number>(0);
@@ -23,8 +25,8 @@ const Home: React.FC = () => {
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const data = await getTasks();
-        setTotalTasks(data.total_task ?? 0);
+        const data = await getTotalTasks();
+        setTotalTasks(data.total);
       } catch (error: any) {
         console.log(
           "Error al obtener tareas:",
@@ -44,13 +46,16 @@ const Home: React.FC = () => {
 
       <IonPage id="main-content">
         <IonHeader>
-          <IonToolbar>
-            <IonButtons slot="start">
+          <IonToolbar className="custom-toolbar">
+              <IonButtons slot="start" className="menu-buttons">
               <IonMenuButton />
-            </IonButtons>
-            <IonTitle>Orbit</IonTitle>
+              </IonButtons>
+
+              <IonTitle className="header-title">
+              <img src="/logo(2).png" alt="Orbit" className="header-logo" />
+              </IonTitle>
           </IonToolbar>
-        </IonHeader>
+      </IonHeader>
 
         <IonContent className="ion-padding">
           <div style={{ textAlign: "center" }}>
@@ -66,6 +71,7 @@ const Home: React.FC = () => {
             </IonCardContent>
           </IonCard>
         </IonContent>
+        <Footer/>
       </IonPage>
     </>
   );

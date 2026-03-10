@@ -26,7 +26,6 @@ class TaskController extends Controller
     {
         $user = Auth::user();
         $tasks = Task::where('user_id', $user->id)->get();
-        $total_task = $tasks->count();
 
         if ($tasks->isEmpty()) {
             return response()->json([
@@ -37,8 +36,7 @@ class TaskController extends Controller
             return response()->json([
                 'status' => 'success',
                 'data' =>  $tasks,
-                'user_id' => $user->id,
-                'total_task' => $total_task
+                'user_id' => $user->id
             ], 200);
         }
     }
@@ -221,6 +219,30 @@ class TaskController extends Controller
         return response()->json([
             'status' => 'success',
             'data' => $tasks
+        ], 200);
+    }
+
+    public function showTaskDate($date, $date2)
+    {
+        $user = Auth::user();
+        $tasks = Task::where('user_id', $user->id)
+            ->whereBetween('fecha_limite', [$date, $date2])
+            ->paginate(10);
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $tasks
+        ], 200);
+    }
+
+    public function totalTasks()
+    {
+        $user = Auth::user();
+        $total_task = Task::where('user_id', $user->id)->count();
+
+        return response()->json([
+            'status' => 'success',
+            'total' => $total_task
         ], 200);
     }
 }

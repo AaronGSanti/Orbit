@@ -30,6 +30,8 @@ Route::prefix('v1')->group(function () {
         Route::put('/tasks/update/{id}', [TaskController::class, 'update']);
         Route::delete('/tasks/delete/{id}', [TaskController::class, 'delete']);
         Route::get('/tasks/search/{search}', [TaskController::class, 'showTask']);
+        Route::get('/tasks/search_date/{date}/{date2}', [TaskController::class, 'showTaskDate']);
+        Route::get('/tasks/totalTasks', [TaskController::class,'totalTasks']);
 
         //Routes categories
         Route::get('/categories', [CategoryController::class, 'index']);

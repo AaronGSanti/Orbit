@@ -14,8 +14,11 @@ import TaskSearch from "../components/tasks/TaskSearch";
 import { add } from "ionicons/icons";
 import TaskFormModal from "../components/tasks/TaskFormModal";
 import { useEffect, useState } from "react";
-import { deleteTask, getTasks, updateTask } from "../services/task";
+import { deleteTask, getTasks, searchTaskByDate, updateTask } from "../services/task";
 import TaskList from "../components/tasks/TaskList";
+import TaskSearchDate from "../components/tasks/TaskSearchDate";
+import Footer from "../components/layouts/Footer";
+import "../components/layouts/AppMenu.css";
 
 export type Task = {
     id: number;
@@ -60,8 +63,23 @@ const Tarea: React.FC = () => {
             setSelectedTask(taskToEdit);
             setIsOpen(true);
         }catch(error){
+            console.log("Error", error);   
+        }
+    }
+
+    const handleSearchByDate = async (startDate: string , endDate: string) => {
+        try{
+            const response = await searchTaskByDate(startDate,endDate);
+            setTasks(response);
+        }catch(error){
             console.log("Error", error);
         }
+    }
+
+    const handleReset = () => {
+        setFilteredTasks(tasks);
+        setIsSearching(false);
+        loadTasks();
     }
 
     useEffect(() => {
@@ -74,11 +92,14 @@ const Tarea: React.FC = () => {
 
             <IonPage id="main-content">
                 <IonHeader>
-                    <IonToolbar>
-                        <IonButtons slot="start">
-                            <IonMenuButton />
+                    <IonToolbar className="custom-toolbar">
+                        <IonButtons slot="start" className="menu-buttons">
+                        <IonMenuButton />
                         </IonButtons>
-                        <IonTitle>Orbit</IonTitle>
+
+                        <IonTitle className="header-title" style={{color: "black"}}>
+                        <img src="/logo(2).png" alt="Orbit" className="header-logo" />
+                        </IonTitle>
                     </IonToolbar>
                 </IonHeader>
 
@@ -91,7 +112,7 @@ const Tarea: React.FC = () => {
                             marginBottom: "20px"
                         }}
                     >
-                        <h2 style={{ margin: 0, fontWeight: "bold" }}>
+                        <h2 style={{ margin: 0, fontWeight: "bold" , padding:"10px", fontSize:"35px"}}>
                             Gestión de Tareas
                         </h2>
 
@@ -117,6 +138,12 @@ const Tarea: React.FC = () => {
                         }}
                     />
 
+                    <TaskSearchDate
+                        onSearch={handleSearchByDate}
+                        onReset={handleReset}
+                    >
+                    </TaskSearchDate>
+
                     <TaskList tasks={isSearching ? filteredTasks : tasks} onDelete={handleDelete} onEdit={handleEdit}/>
 
                     <TaskFormModal
@@ -131,6 +158,7 @@ const Tarea: React.FC = () => {
                         task={selectedTask}
                     />
                 </IonContent>
+                <Footer/>
             </IonPage>
         </>
     );

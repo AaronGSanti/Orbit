@@ -1,0 +1,31 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;  
+    padding: 10px; 
+    font-weight: bold;
+}
+
+.date-container{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+}
+
+.input-container{
+    flex: 1;
+    min-width: 0;
+    border-radius: 10px;
+    padding: 8px;
+}
+
+.date-container ion-button{
+    flex-shrink: 0;
+}
+
+.label-date {
+    margin-bottom: 10px;
+    display: block;
+    font-size: 20px;
+}

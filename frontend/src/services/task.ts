@@ -38,3 +38,13 @@ export const updateTask = async(id:number, titulo:string , descripcion: string, 
 
     return response.data;
 }
+
+export const searchTaskByDate = async (date : string, date2: string) =>{
+    const response = await api.get("/api/v1/tasks/search_date/" + date + "/" + date2);
+    return response.data.data.data;
+}
+
+export const getTotalTasks = async () => {
+    const response = await api.get("/api/v1/tasks/totalTasks");
+    return response.data;
+}
