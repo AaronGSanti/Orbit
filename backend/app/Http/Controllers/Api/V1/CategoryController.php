@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use OpenApi\Attributes as OA;
 
@@ -23,7 +24,8 @@ class CategoryController extends Controller
     )]
     public function index()
     {
-        $categories = Category::all();
+        $user = Auth::user();
+        $categories = Category::where('user_id', $user->id)->get();
 
         if ($categories->isEmpty()) {
             return response()->json([
@@ -167,18 +169,41 @@ class CategoryController extends Controller
         $categories = Category::where('id', $id)
             ->where('user_id', $request->user()->id)
             ->first();
-        
-        if(!$categories){
+
+        if (!$categories) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Category not found'
             ], 404);
-        }else{
+        } else {
             $categories->delete();
             return response()->json([
                 'message' => 'Category deleted successfully',
                 'status' => 'success',
             ], 200);
         }
+    }
+
+    public function show($nombre)
+    {
+        $user = Auth::user();
+        $categories = Category::where('user_id', $user->id)
+            ->where('nombre','like', '%'.$nombre.'%')
+            ->get();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $categories
+        ], 200);
+    }
+
+    public function totalCategories(){
+        $user = Auth::user();
+        $total_categories = Category::where('user_id', $user->id)->count();
+
+        return response()->json([
+            'status' => 'success',
+            'total' => $total_categories
+        ]);
     }
 }

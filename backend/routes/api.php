@@ -38,6 +38,8 @@ Route::prefix('v1')->group(function () {
         Route::post('/categories/store', [CategoryController::class, 'store']);
         Route::put('/categories/update/{id}', [CategoryController::class, 'update']);
         Route::delete('/categories/delete/{id}', [CategoryController::class, 'delete']);
+        Route::get('/categories/search/{nombre}', [CategoryController::class,'show']);
+        Route::get('/categories/totalCategories', [CategoryController::class, 'totalCategories']);
 
         //Routes task lists
         Route::get('/task_lists', [TaskListController::class, 'index']);
