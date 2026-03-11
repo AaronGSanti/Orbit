@@ -1,0 +1,43 @@
+.category-form{
+display:flex;
+flex-direction:column;
+gap:20px;
+margin-top:10px;
+}
+
+.button-group{
+margin-top:20px;
+display:flex;
+justify-content: flex-end;
+gap:10px;
+}
+
+.color-palette{
+display:flex;
+flex-wrap:wrap;
+gap:12px;
+margin-top:10px;
+margin-bottom: 10px;
+}
+
+.color-circle{
+width:32px;
+height:32px;
+border-radius:50%;
+cursor:pointer;
+border:2px solid transparent;
+transition:transform 0.2s;
+}
+
+.color-circle:hover{
+transform:scale(1.1);
+}
+
+.color-circle.selected{
+border:2px solid black;
+}
+
+.input-item{
+    margin-bottom: 10px;
+    padding: 10px;
+}
