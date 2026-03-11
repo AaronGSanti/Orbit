@@ -10,6 +10,7 @@ import {
   IonPage,
   IonTitle,
   IonToolbar,
+  useIonViewWillEnter,
 } from "@ionic/react";
 import { useEffect, useState } from "react";
 
@@ -17,28 +18,33 @@ import AppMenu from "../components/layouts/AppMenu";
 import { getTasks, getTotalTasks } from "../services/task";
 import Footer from "../components/layouts/Footer";
 import "../components/layouts/AppMenu.css";
+import { getTotalCategory } from "../services/categories";
 
 const Home: React.FC = () => {
   const [totalTasks, setTotalTasks] = useState<number>(0);
+  const [totalCategories, setTotalCategories] = useState<number>(0);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchTasks = async () => {
-      try {
-        const data = await getTotalTasks();
-        setTotalTasks(data.total);
-      } catch (error: any) {
-        console.log(
-          "Error al obtener tareas:",
-          error.response?.data || error.message,
-        );
-      } finally {
-        setLoading(false);
-      }
-    };
+const fetchDashboardData = async () => {
+    try {
+      const [tasksData, categoriesData] = await Promise.all([
+        getTotalTasks(),
+        getTotalCategory()
+      ]);
 
-    fetchTasks();
-  }, []);
+      setTotalTasks(tasksData.total);
+      setTotalCategories(categoriesData.total);
+    } catch (error: any) {
+      console.log(error.response?.data || error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  {/**^Se usa para recargar datos al volver a la pagina */}
+  useIonViewWillEnter(() => {
+    fetchDashboardData();
+  });
 
   return (
     <>
@@ -62,12 +68,23 @@ const Home: React.FC = () => {
             <h1 style={{ fontWeight: "bold" }}>Bienvenido al Dashboard</h1>
             <p> Aqui puedes ver el resumen de tu aplicación.</p>
           </div>
+          {/**TAREAS */}
           <IonCard>
             <IonCardHeader>
               <IonCardTitle>Tareas</IonCardTitle>
             </IonCardHeader>
             <IonCardContent>
               <h1>{loading ? "..." : totalTasks}</h1>
+            </IonCardContent>
+          </IonCard>
+
+          {/**CATEGORIAS */}
+          <IonCard>
+            <IonCardHeader>
+              <IonCardTitle>Categorias</IonCardTitle>
+            </IonCardHeader>
+            <IonCardContent>
+              <h1>{loading ? "..." : totalCategories}</h1>
             </IonCardContent>
           </IonCard>
         </IonContent>

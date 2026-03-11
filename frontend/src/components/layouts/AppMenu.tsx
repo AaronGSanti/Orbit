@@ -3,7 +3,9 @@ import {
     IonButtons,
     IonContent,
     IonHeader,
+    IonIcon,
     IonItem,
+    IonLabel,
     IonList,
     IonMenu,
     IonMenuButton,
@@ -13,6 +15,7 @@ import {
     IonToolbar,
 } from "@ionic/react";
 import { useHistory } from "react-router";
+import { checkbox, home, pricetag } from "ionicons/icons";
 
 function Menu() {
     const history = useHistory();
@@ -30,7 +33,11 @@ function Menu() {
                     {/**MENU HOME */}
                     <IonMenuToggle autoHide={false}>
                         <IonItem button detail={false} onClick={() => history.push("/home")}>
-                            Dashboard
+                            <IonIcon icon={home} slot="start" size="large">
+                            </IonIcon>
+                            <IonLabel>
+                                Home
+                            </IonLabel>
                         </IonItem>
                     </IonMenuToggle>
 
@@ -39,7 +46,17 @@ function Menu() {
                         <IonItem button detail={false} onClick={() => 
                             history.push("/tasks")
                         }>
-                            Tasks
+                            <IonIcon icon={checkbox} slot="start" size="large"></IonIcon>
+                            <IonLabel>Tasks</IonLabel>
+                        </IonItem>
+                    </IonMenuToggle>
+
+                    {/** MENU CATEGORIAS*/}
+                    <IonMenuToggle autoHide={false}>
+                        <IonItem button detail={false} onClick={() => history.push("/categories")}>
+                            <IonIcon icon={pricetag} slot="start" size="large">
+                            </IonIcon>
+                            <IonLabel>Categories</IonLabel>
                         </IonItem>
                     </IonMenuToggle>
                 </IonList>
