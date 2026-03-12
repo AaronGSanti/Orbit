@@ -35,6 +35,9 @@ const TaskList: React.FC<TaskListProps> = ({ tasks = [], onDelete , onEdit}) => 
                         {formatLabel(task.prioridad)}
                     </IonBadge>
                 </p>
+                <p>
+                    <strong>Categoria: </strong>{task.category ? task.category.nombre : 'Sin categoria'}
+                </p>
                 <p><strong>Fecha limite: </strong>{new Date(task.fecha_limite).toLocaleDateString()}</p>
 
                 

@@ -51,7 +51,8 @@ class Task extends Model
 		'descripcion',
 		'estado',
 		'prioridad',
-		'fecha_limite'
+		'fecha_limite',
+		'category_id'
 	];
 
 	public function task_list()
@@ -81,5 +82,9 @@ class Task extends Model
 		return $this->belongsToMany(Tag::class, 'task_tag')
 			->withPivot('id')
 			->withTimestamps();
+	}
+
+	public function category(){
+		return $this->belongsTo(Category::class, 'category_id');
 	}
 }

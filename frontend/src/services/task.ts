@@ -10,13 +10,14 @@ export const searchTasks = async (search: string) => {
     return response.data.data.data;
 }
 
-export const createTask = async (titulo: string , descripcion: string , estado: string , prioridad: string , fecha_limite: string) => {
+export const createTask = async (titulo: string , descripcion: string , estado: string , prioridad: string , fecha_limite: string , category_id: number | null) => {
     const response = await api.post("/api/v1/tasks/store", {
         titulo,
         descripcion,
         estado,
         prioridad,
-        fecha_limite
+        fecha_limite,
+        category_id
     });
 
     return response.data;
@@ -27,13 +28,14 @@ export const deleteTask = async (id: number) => {
     return response.data;
 }
 
-export const updateTask = async(id:number, titulo:string , descripcion: string, estado: string, prioridad:string, fecha_limite:string) => {
+export const updateTask = async(id:number, titulo:string , descripcion: string, estado: string, prioridad:string, fecha_limite:string, category_id: number | null) => {
     const response = await api.put("/api/v1/tasks/update/" + id , {
         titulo,
         descripcion,
         estado,
         prioridad,
-        fecha_limite
+        fecha_limite,
+        category_id
     });
 
     return response.data;

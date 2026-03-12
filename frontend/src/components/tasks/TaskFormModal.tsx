@@ -19,7 +19,8 @@ import {
 } from "@ionic/react";
 import { close } from "ionicons/icons";
 import { createTask, updateTask } from "../../services/task";
-import { Task } from "../../pages/Tarea";
+import { Category, Task } from "../../pages/Tarea";
+import { getCategories } from "../../services/categories";
 
 type TaskFormModalProps = {
     isOpen: boolean;
@@ -36,10 +37,12 @@ const TaskFormModal: React.FC<TaskFormModalProps> = ({
 }) => {
     const [titulo, setTitulo] = useState("");
     const [descripcion, setDescripcion] = useState("");
-    const [estado, setEstado] = useState("");
-    const [prioridad, setPrioridad] = useState("");
+    const [estado, setEstado] = useState<string>("");
+    const [prioridad, setPrioridad] = useState<string>("");
     const [fecha_limite, setFechaLimite] = useState("");
     const [isSaving, setIsSaving] = useState(false);
+    const [categories, setCategories] = useState<Category[]>([]);
+    const [categoryId, setCategoryId] = useState<number | null>(null);
 
     useEffect(() => {
         if (task) {
@@ -48,14 +51,28 @@ const TaskFormModal: React.FC<TaskFormModalProps> = ({
             setEstado(task.estado || "");
             setPrioridad(task.prioridad || "");
             setFechaLimite(task.fecha_limite ? task.fecha_limite.split("T")[0] : "");
+            setCategoryId(task.category ? task.category.id : null);
         } else {
             setTitulo("");
             setDescripcion("");
             setEstado("");
             setPrioridad("");
             setFechaLimite("");
+            setCategoryId(null);
         }
     }, [task, isOpen]);
+
+    useEffect(() => {
+        const loadCategories = async () => {
+            try{
+                const data = await getCategories();
+                setCategories(data);
+            }catch(error){
+                console.log("Error", error);
+            }
+        }
+        loadCategories();
+    }, []);
 
     const handleSubmit = async () => {
         if (isSaving) return;
@@ -70,7 +87,8 @@ const TaskFormModal: React.FC<TaskFormModalProps> = ({
                     descripcion,
                     estado,
                     prioridad,
-                    fecha_limite
+                    fecha_limite,
+                    categoryId,
                 );
 
                 console.log("Tarea actualizada:", data);
@@ -80,7 +98,8 @@ const TaskFormModal: React.FC<TaskFormModalProps> = ({
                     descripcion,
                     estado,
                     prioridad,
-                    fecha_limite
+                    fecha_limite,
+                    categoryId,
                 );
 
                 console.log("Tarea creada:", data);
@@ -91,6 +110,7 @@ const TaskFormModal: React.FC<TaskFormModalProps> = ({
             setEstado("");
             setPrioridad("");
             setFechaLimite("");
+            setCategoryId(null);
 
             await onTaskCreated();
         } catch (error: any) {
@@ -117,8 +137,10 @@ const TaskFormModal: React.FC<TaskFormModalProps> = ({
             <IonContent className="ion-padding">
                 <IonList>
                     <IonItem>
-                        <IonLabel position="stacked">Título</IonLabel>
                         <IonInput
+                            label="Título"
+                            className="big-label"
+                            labelPlacement="stacked"
                             value={titulo}
                             onIonChange={(e) => setTitulo(e.detail.value!)}
                             placeholder="Introduce el título"
@@ -126,8 +148,9 @@ const TaskFormModal: React.FC<TaskFormModalProps> = ({
                     </IonItem>
 
                     <IonItem>
-                        <IonLabel position="stacked">Descripción</IonLabel>
                         <IonTextarea
+                            label="Descripción"
+                            labelPlacement="stacked"
                             value={descripcion}
                             onIonChange={(e) => setDescripcion(e.detail.value!)}
                             placeholder="Describe la tarea"
@@ -136,11 +159,13 @@ const TaskFormModal: React.FC<TaskFormModalProps> = ({
                     </IonItem>
 
                     <IonItem>
-                        <IonLabel position="stacked">Estado</IonLabel>
                         <IonSelect
-                            value={estado}
-                            onIonChange={(e) => setEstado(e.detail.value)}
+                            label="Estado"
+                            labelPlacement="stacked"
+                            value={estado || undefined}
+                            onIonChange={(e) => setEstado(String(e.detail.value))}
                             placeholder="Selecciona un estado"
+                            interface="popover"
                         >
                             <IonSelectOption value="pendiente">Pendiente</IonSelectOption>
                             <IonSelectOption value="en_progreso">En progreso</IonSelectOption>
@@ -150,11 +175,30 @@ const TaskFormModal: React.FC<TaskFormModalProps> = ({
                     </IonItem>
 
                     <IonItem>
-                        <IonLabel position="stacked">Prioridad</IonLabel>
+                        <IonSelect 
+                            label="Categoria"
+                            labelPlacement="stacked"
+                            value={categoryId || undefined}
+                            onIonChange={(e) => setCategoryId(e.detail.value)}
+                            placeholder="Selecciona una categoria"
+                            interface="popover"
+                        >
+                                {categories.map((category) => (
+                                    <IonSelectOption key={category.id} value={category.id}>
+                                        {category.nombre}
+                                    </IonSelectOption>
+                                ))}
+                            </IonSelect>
+                    </IonItem>
+
+                    <IonItem>
                         <IonSelect
-                            value={prioridad}
-                            onIonChange={(e) => setPrioridad(e.detail.value)}
+                            label="Prioridad"
+                            labelPlacement="stacked"
+                            value={prioridad || undefined}
+                            onIonChange={(e) => setPrioridad(String(e.detail.value))}
                             placeholder="Selecciona una prioridad"
+                            interface="popover"
                         >
                             <IonSelectOption value="baja">Baja</IonSelectOption>
                             <IonSelectOption value="media">Media</IonSelectOption>
@@ -167,7 +211,8 @@ const TaskFormModal: React.FC<TaskFormModalProps> = ({
                         <IonLabel position="stacked">Fecha límite</IonLabel>
                         <IonDatetime
                             presentation="date"
-                            value={fecha_limite}
+                            preferWheel={false}
+                            value={fecha_limite || undefined}
                             onIonChange={(e) => {
                                 const value = e.detail.value as string;
                                 setFechaLimite(value ? value.split("T")[0] : "");

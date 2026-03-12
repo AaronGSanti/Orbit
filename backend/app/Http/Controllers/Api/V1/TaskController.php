@@ -25,7 +25,9 @@ class TaskController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $tasks = Task::where('user_id', $user->id)->get();
+        $tasks = Task::where('user_id', $user->id)
+            ->with('category')
+            ->get();
 
         if ($tasks->isEmpty()) {
             return response()->json([
@@ -76,6 +78,7 @@ class TaskController extends Controller
                 'prioridad' => 'required|string|in:baja,media,alta,urgente',
                 'fecha_limite' => 'nullable|date',
                 'task_list_id' => 'nullable|integer|exists:task_lists,id',
+                'category_id' => 'nullable|integer|exists:categories,id'
             ]);
 
             $task = Task::create([
@@ -85,6 +88,7 @@ class TaskController extends Controller
                 'prioridad' => $validatedData['prioridad'],
                 'fecha_limite' => $validatedData['fecha_limite'] ?? null,
                 'task_list_id' => $validatedData['task_list_id'] ?? null,
+                'category_id' => $validatedData['category_id'] ?? null,
                 'user_id' => $request->user()->id
             ]);
 
@@ -153,7 +157,8 @@ class TaskController extends Controller
             'estado' => 'required|string|in:pendiente,en_progreso,bloqueada,completada',
             'prioridad' => 'required|string|in:baja,media,alta,urgente',
             'fecha_limite' => 'nullable|date',
-            'task_list_id' => 'nullable|integer|exists:task_lists,id'
+            'task_list_id' => 'nullable|integer|exists:task_lists,id',
+            'category_id' => 'nullable|integer|exists:categories,id'
         ]);
 
         $task->update($validatedData);
