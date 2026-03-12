@@ -20,6 +20,12 @@ import TaskSearchDate from "../components/tasks/TaskSearchDate";
 import Footer from "../components/layouts/Footer";
 import "../components/layouts/AppMenu.css";
 
+export type Category = {
+    id:number;
+    nombre:string;
+    color:string;
+}
+
 export type Task = {
     id: number;
     titulo: string;
@@ -27,6 +33,7 @@ export type Task = {
     estado: string;
     prioridad: string;
     fecha_limite: string;
+    category: Category;
 };
 
 const Tarea: React.FC = () => {
